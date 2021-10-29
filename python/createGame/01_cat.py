@@ -35,7 +35,7 @@ class App:
         # 指定イラストのサイズ
         w = CAT_W
         h = CAT_H
-        # 抜きたい色
+        # 透過したい色
         colkey = 13
         pyxel.blt(x, y, img, u, v, w, h, colkey)
 
