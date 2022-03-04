@@ -177,6 +177,17 @@ class App:
                 # 左向きの場合、左(マイナス方向)にスピード変数分進んでいく
                 else:
                     self.Balls[i].update(self.Balls[i].pos.x - self.Balls[i].speed, self.Balls[i].pos.y, self.Balls[i].vec, self.Balls[i].size, self.Balls[i].color)
+                
+                # 当たり判定(敵キャラとボール)
+                enemy_count = len(self.Enemies)
+                for j in range(enemy_count):
+                    if ((self.Enemies[j].pos.x < self.Balls[i].pos.x)
+                    and (self.Balls[i].pos.x < self.Enemies[j].pos.x + ENEMY_W)
+                    and (self.Enemies[j].pos.y < self.Balls[i].pos.y)
+                    and (self.Balls[i].pos.y < self.Enemies[j].pos.y + ENEMY_H)):
+                        # 消滅(敵インスタンス破棄)
+                        del self.Enemies[j]
+                        break
             else:
                 del self.Balls[i]
                 break
@@ -198,5 +209,17 @@ class App:
         # ボールの描画
         for ball in self.Balls:
             pyxel.circ(ball.pos.x, ball.pos.y, ball.size, ball.color)
+
+        # 敵キャラの描画
+        for enemy in self.Enemies:
+            if enemy.vec > 0:
+                pyxel.blt(enemy.pos.x, enemy.pos.y, enemy.img_enemy, 0, 0, -ENEMY_W, ENEMY_H, 11)
+            else:
+                pyxel.blt(enemy.pos.x, enemy.pos.y, enemy.img_enemy, 0, 0, ENEMY_W, ENEMY_H, 11)
+        
+        # GameOverの描画
+        if self.GameOver_flag == 1:
+            pyxel.text(self.mcat.pos.x - 10, self.mcat.pos.y - 5, "GAME OVER", 8)
+
 
 App()
